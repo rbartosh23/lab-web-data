@@ -75,7 +75,7 @@ def extract_prices_cents(html):
     soup = BeautifulSoup(html, 'html.parser')
     prices = []
     for tag in soup.select('.price'):
-        dollars = tag.text.strip('$')
+        dollars = tag.text.strip().replace('$', '').replace(',', '').strip()
         cents = int(round(float(dollars) * 100))
         prices.append(cents)
     return prices        
@@ -128,7 +128,7 @@ def extract_listings(html):
         if title and price:
             name = title.text.strip()
             url = title['href']
-            dollars = price.text.strip('$')
+            dollars = price.text.strip().replace('$', '').replace(',', '').strip()
             cents = int(round(float(dollars) * 100))
             listings.append({'name': name, 'price_cents': cents, 'url': url})
     return listings
